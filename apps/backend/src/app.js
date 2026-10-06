@@ -1,7 +1,12 @@
 const express = require("express")
 const app = express()
 
+//authentication routes
+const authRoutes = require("../src/modules/auth/auth.routes")
 
+
+//authentication api path
+app.use("/auth", authRoutes)
 
 //health check
 app.get("/", (req, res) => {

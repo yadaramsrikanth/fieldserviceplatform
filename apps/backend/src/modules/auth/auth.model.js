@@ -10,10 +10,10 @@ const userSchema = new mongoose.Schema({
     suspensionReason: { type: String, trim: true, default: null },
     blockedReason: { type: String, trim: true, default: null },
     address: {
-        addressLine: { type: String, required: true, trim: true },
-        city: { type: String, required: true, trim: true },
-        state: { type: String, required: true, trim: true },
-        postalCode: { type: String, required: true, trim: true },
+        addressLine: { type: String, trim: true, default: null },
+        city: { type: String, trim: true, default: null },
+        state: { type: String, trim: true, default: null },
+        postalCode: { type: String, trim: true, default: null },
         country: { type: String, trim: true, default: "India" }
     }
 }, { timestamps: true })
