@@ -12,6 +12,13 @@ const registerUser = async (body) => {
         throw error
     }
 
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!EMAIL_REGEX.test(email.trim())) {
+        const error = new Error("Invalid email format")
+        error.statusCode = 400
+        throw error
+    }
+
     if (!["CUSTOMER", "TECHNICIAN"].includes(role)) {
 
         const error = new Error("Invalid role")
@@ -46,13 +53,14 @@ const registerUser = async (body) => {
             error.statusCode = 400
             throw error
         }
-        if (experienceYears === undefined || experienceYears === null) {
-            const error = new Error("Technician experience are required")
+        if (experienceYears === undefined || experienceYears === null || isNaN(experienceYears) || Number(experienceYears) < 0) {
+            const error = new Error("Technician experience Years must be a non negative number")
             error.statusCode = 400
             throw error
         }
-        if (!availability) {
-            const error = new Error("Availability is required")
+        const validAvailability = ["weekend", "24/7", "weekdays"]
+        if (!validAvailability.includes(availability)) {
+            const error = new Error(`Availability must be one of ${validAvailability.join(",")}`)
             error.statusCode = 400
             throw error
         }
