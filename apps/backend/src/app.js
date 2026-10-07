@@ -5,8 +5,13 @@ const app = express()
 const authRoutes = require("../src/modules/auth/auth.routes")
 
 
+//core middleware
+app.use(express.json())
+
 //authentication api path
 app.use("/auth", authRoutes)
+
+
 
 //health check
 app.get("/", (req, res) => {
