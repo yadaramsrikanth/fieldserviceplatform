@@ -22,5 +22,10 @@ const register = async (req, res) => {
     }
 }
 
+//login controller
+const login = async (req, res) => {
 
-module.exports = { register }
+}
+
+
+module.exports = { register, login }

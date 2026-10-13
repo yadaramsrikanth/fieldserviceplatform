@@ -108,4 +108,9 @@ const registerUser = async (body) => {
 
 }
 
-module.exports = { registerUser }
+//login user service
+const loginUser=async()=>{
+
+}
+
+module.exports = { registerUser,loginUser }
