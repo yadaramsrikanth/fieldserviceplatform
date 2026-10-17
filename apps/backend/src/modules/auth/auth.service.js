@@ -105,7 +105,7 @@ const loginUser = async ({ email, password }, requestInfo = {}) => {
     }
 
     if (!process.env.JWT_ACCESS_SECRET) {
-        throw error("JWT_ACCESS_SECRET is not configured")
+        throw new error("JWT_ACCESS_SECRET is not configured")
     }
 
     //find the user by email
@@ -189,4 +189,116 @@ const loginUser = async ({ email, password }, requestInfo = {}) => {
 
 }
 
-module.exports = { registerUser, loginUser }
+//logout user
+const logoutUser = async (refreshToken) => {
+    //no refresh token means there is no sesion to revoke
+    if (!refreshToken) return;
+
+    //hashing received refresh token
+    const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex")
+    // revoke matching active session
+    await Session.findOneAndUpadte(
+        {
+            refreshTokenHash,
+            revokedAt: null
+        },
+        {
+            $set: { revokedAt: new Date() }
+        }
+    )
+}
+
+//refresh token servuce
+const refreshTokenService = async (refreshToken) => {
+    if (typeof refreshToken !== "string" || !refreshToken) {
+        throw createError("RefreshToken is required", 401)
+    }
+
+    if (!process.env.JWT_ACCESS_SECRET) {
+        throw new Error("JWT Access secret not configured")
+    }
+
+    //hash refresh token received from the client
+    const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex")
+
+    const now = new Date()
+    //find a valid active session
+    const session = await Session.findOne({
+        refreshTokenHash,
+        revokedAt: null,
+        expiresAt: { $gt: now },
+        absoluteExpiresAt: { $gt: now }
+
+    })
+    if (!session) {
+        throw createError("Invalid or expired refresh token", 401)
+    }
+
+    //find an account associated with this session
+    const user = await User.findById(session.userId)
+    if (!user || user.accountStatus !== "ACTIVE") {
+        throw createError("Account is not allowed to login", 403);
+    }
+    //  Generate a new access token.
+    const accessToken = jwt.sign(
+        {
+            userId: user._id.toString(),
+            role: user.role,
+        },
+        process.env.JWT_ACCESS_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_LIFETIME || "15m",
+        }
+    );
+    //  Generate a new refresh token.
+    const newRefreshToken = crypto.randomBytes(64).toString("hex")
+    const newRefreshTokenHash = crypto
+        .createHash("sha256")
+        .update(newRefreshToken)
+        .digest("hex");
+
+    //Extend inactivity expiry, capped by absolute expiry.
+    const newExpiry = new Date(
+        Math.min(
+            now.getTime() + INACTIVITY_TIMEOUT,
+            session.absoluteExpiresAt.getTime()
+        )
+    );
+    //Rotate the refresh token in the existing session.
+    const result = await Session.updateOne(
+        {
+            _id: session._id,
+            refreshTokenHash,
+            revokedAt: null,
+            expiresAt: { $gt: now },
+            absoluteExpiresAt: { $gt: now },
+        },
+        {
+            $set: {
+                refreshTokenHash: newRefreshTokenHash,
+                lastUsedAt: now,
+                expiresAt: newExpiry,
+            },
+        }
+    );
+    if (result.modifiedCount !== 1) {
+        throw createError("Invalid or expired refresh token", 401);
+    }
+
+    //  Return the new tokens and safe user details.
+    return {
+        accessToken,
+        refreshToken: newRefreshToken,
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            accountStatus: user.accountStatus,
+        },
+    };
+
+
+}
+
+module.exports = { registerUser, loginUser, logoutUser, refreshTokenService }

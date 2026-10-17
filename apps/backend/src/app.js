@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cookieParser = require("cookie-parser")
 
 //authentication routes
 const authRoutes = require("../src/modules/auth/auth.routes")
@@ -7,7 +8,7 @@ const authRoutes = require("../src/modules/auth/auth.routes")
 
 //core middleware
 app.use(express.json())
-
+app.use(cookieParser())
 //authentication api path
 app.use("/auth", authRoutes)
 
