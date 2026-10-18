@@ -301,4 +301,27 @@ const refreshTokenService = async (refreshToken) => {
 
 }
 
-module.exports = { registerUser, loginUser, logoutUser, refreshTokenService }
+//forgot password service
+const forgotPasswordService = async (email, password) => {
+    if (password.length < 8) {
+        throw createError("Password must be atleast 8 characters", 400)
+    }
+    const normalizedEmail = email.trim().toLowerCase()
+    const user = await User.findOne({ email: normalizedEmail })
+    if (!user) {
+        throw createError("User not found", 404)
+    }
+
+    //hashing the password beforing saving
+    user.password = await bcrypt.hash(password, 12)
+    await user.save()
+
+    //invalidating existing login sessions
+    await Session.updateMany(
+        { userId: user._id, revokedAt: null },
+        { $set: { revokedAt: new Date() } }
+    )
+    return { message: "Password reset successful" }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, refreshTokenService, forgotPasswordService }

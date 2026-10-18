@@ -1,4 +1,4 @@
-const { registerUser, loginUser, logoutUser, refreshTokenService } = require("./auth.service")
+const { registerUser, loginUser, logoutUser, refreshTokenService, forgotPasswordService } = require("./auth.service")
 
 //register controller
 const register = async (req, res) => {
@@ -139,4 +139,37 @@ const refresh = async (req, res) => {
     }
 }
 
-module.exports = { register, login, logout, refresh }
+//forgot password
+const forgotPassword = async (req, res) => {
+    const { email, password, confirmPassword } = req.body
+    try {
+        if (!email || !password || !confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            })
+        }
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Passwords do not match"
+            })
+        }
+        const result = await forgotPasswordService(email, password)
+        return res.status(200).json({
+            success: true,
+            message: result.message
+        })
+
+
+    } catch (error) {
+        return res.status(error.statusCode || 500).json({
+            sucess: false,
+            message: error.statusCode ? error.message : "Internal server error"
+        })
+    }
+}
+
+
+module.exports = { register, login, logout, refresh, forgotPassword }
