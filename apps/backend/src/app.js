@@ -5,12 +5,15 @@ const cookieParser = require("cookie-parser")
 //authentication routes
 const authRoutes = require("../src/modules/auth/auth.routes")
 
+//admin
+const adminUserRoutes = require("../src/modules/admin/adminauth/adminauth.routes")
 
 //core middleware
 app.use(express.json())
 app.use(cookieParser())
 //authentication api path
 app.use("/auth", authRoutes)
+app.use("/auth/admin", adminUserRoutes)
 
 
 
