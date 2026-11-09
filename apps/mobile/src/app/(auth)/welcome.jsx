@@ -1,30 +1,40 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View, ScrollView } from 'react-native'
 import { Settings } from "lucide-react-native";
+import { useRouter } from "expo-router"
 export default function Welcome() {
+    const router = useRouter()
+
     return (
         <View style={styles.container}>
-            <View style={styles.centerContainer}>
-                <View style={styles.settingsIconContainer}>
-                    <Settings size={32} color="#ffffff" />
+            <ScrollView
+                contentContainerStyle={{
+                    flexGrow: 1,
+                   
+                    
+                }}>
+                <View style={styles.centerContainer}>
+                    <View style={styles.settingsIconContainer}>
+                        <Settings size={32} color="#ffffff" />
+                    </View>
+
+                    <Text style={styles.title}>Book Services.</Text>
+                    <Text style={styles.title}>Manage Jobs.</Text>
+                    <Text style={styles.title}>Get Work Done.</Text>
+                    <Text style={styles.welcomePara}>
+                        The trusted on-demand platform connecting homeowners with certified HVAC, Plumbing & Electrical professionals.
+                    </Text>
+                </View>
+                {/* bottom buttons */}
+                <View style={styles.bottomButtonsContainer}>
+                    <Pressable style={styles.registerButton} onPress={() => router.push("/customer-technician")}>
+                        <Text style={styles.registerButtonText}>Get Started (Create Account)</Text>
+                    </Pressable>
+                    <Pressable style={styles.loginButton}>
+                        <Text style={styles.loginButtonText}>Already Have an Account? Log In</Text>
+                    </Pressable>
                 </View>
 
-                <Text style={styles.title}>Book Services.</Text>
-                <Text style={styles.title}>Manage Jobs.</Text>
-                <Text style={styles.title}>Get Work Done.</Text>
-                <Text style={styles.welcomePara}>
-                    The trusted on-demand platform connecting homeowners with certified HVAC, Plumbing & Electrical professionals.
-                </Text>
-            </View>
-            {/* bottom buttons */}
-            <View style={styles.bottomButtonsContainer}>
-                <Pressable style={styles.registerButton}>
-                    <Text style={styles.registerButtonText}>Get Started (Create Account)</Text>
-                </Pressable>
-                <Pressable style={styles.loginButton}>
-                    <Text style={styles.loginButtonText}>Already Have an Account? Log In</Text>
-                </Pressable>
-            </View>
-
+            </ScrollView>
         </View>
     )
 }
@@ -34,7 +44,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#0F172A",
         paddingBottom: 30,
-        paddingHorizontal: 24
+        paddingHorizontal: 24,
+
     },
     centerContainer: {
         flex: 1,
@@ -67,26 +78,26 @@ const styles = StyleSheet.create({
     registerButton: {
         padding: 12,
         backgroundColor: "#2563EB",
-        alignItems:"center",
-        borderRadius:15
+        alignItems: "center",
+        borderRadius: 15
     },
     registerButtonText: {
         color: "#ffffff",
-        fontWeight:"700",
-        fontSize:18
+        fontWeight: "700",
+        fontSize: 18
     },
-    loginButton:{
-         padding: 12,
+    loginButton: {
+        padding: 12,
         backgroundColor: "#1E293B",
-        alignItems:"center",
-        borderRadius:15,
-        borderWidth:1,
-        borderColor:"#334155"
+        alignItems: "center",
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: "#334155"
     },
     loginButtonText: {
         color: "#ffffff",
-        fontWeight:"500",
-        fontSize:14
+        fontWeight: "500",
+        fontSize: 14
     }
 
 
