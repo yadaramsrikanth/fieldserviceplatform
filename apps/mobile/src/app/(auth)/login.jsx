@@ -1,0 +1,9 @@
+import { View, Text } from "react-native"
+import LoginScreen from "../../features/auth/screens/LoginScreen"
+
+const Login = () => {
+    return <LoginScreen />
+
+}
+
+export default Login

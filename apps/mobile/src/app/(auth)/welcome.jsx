@@ -9,8 +9,8 @@ export default function Welcome() {
             <ScrollView
                 contentContainerStyle={{
                     flexGrow: 1,
-                   
-                    
+
+
                 }}>
                 <View style={styles.centerContainer}>
                     <View style={styles.settingsIconContainer}>
@@ -29,7 +29,7 @@ export default function Welcome() {
                     <Pressable style={styles.registerButton} onPress={() => router.push("/customer-technician")}>
                         <Text style={styles.registerButtonText}>Get Started (Create Account)</Text>
                     </Pressable>
-                    <Pressable style={styles.loginButton}>
+                    <Pressable style={styles.loginButton} onPress={() => router.push("/login")}>
                         <Text style={styles.loginButtonText}>Already Have an Account? Log In</Text>
                     </Pressable>
                 </View>
