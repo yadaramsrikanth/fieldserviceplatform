@@ -38,6 +38,8 @@ export default function AuthLayout() {
                 header: () => <AuthHeader />,
 
             }} />
+            <Stack.Screen name="login" options={{ header: () => <AuthHeader /> }} />
+            <Stack.Screen name="forgot-password" options={{ header: () => <AuthHeader /> }} />
         </Stack>
 
 
