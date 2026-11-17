@@ -9,39 +9,39 @@ export default function CustomerTechnician() {
             flexGrow: 1,
             
         }}> */}
-            <Text style={styles.textHeading}> How will you use FieldForce?</Text>
-            <Text style={styles.textPara}>Select your account type to proceed.</Text>
-            <Pressable style={({ pressed }) => [
-                styles.customerContainer,
-                pressed & styles.cardPressed
-            ]} onPress={() => router.push("/")}>
-                <View>
-                    <View style={styles.customerInnerContainer}>
-                        <UserRound size={30} style={styles.iconStyles} />
-                        <Text style={styles.customerText}>CUSTOMER</Text>
-                    </View>
-                    <Text style={styles.customerPara}>Book and manage home & field service requests</Text>
+        <Text style={styles.textHeading}> How will you use FieldForce?</Text>
+        <Text style={styles.textPara}>Select your account type to proceed.</Text>
+        <Pressable style={({ pressed }) => [
+            styles.customerContainer,
+            pressed & styles.cardPressed
+        ]} onPress={() => router.push("/customer-register")}>
+            <View>
+                <View style={styles.customerInnerContainer}>
+                    <UserRound size={30} style={styles.iconStyles} />
+                    <Text style={styles.customerText}>CUSTOMER</Text>
                 </View>
-                <ChevronRight size={30} style={styles.iconStyles} />
-            </Pressable>
+                <Text style={styles.customerPara}>Book and manage home & field service requests</Text>
+            </View>
+            <ChevronRight size={30} style={styles.iconStyles} />
+        </Pressable>
 
-            <Pressable style={({ pressed }) => [
-                styles.customerContainer,
-                pressed & styles.cardPressed
-            ]} onPress={() => router.push("/")}>
-                <View>
-                    <View style={styles.customerInnerContainer}>
-                        <Wrench size={30} style={styles.iconStyles} />
-                        <Text style={styles.customerText}>TECHNICIAN</Text>
-                    </View>
-                    <Text style={styles.customerPara}>Manage jobs, receive dispatches, and grow earnings.</Text>
+        <Pressable style={({ pressed }) => [
+            styles.customerContainer,
+            pressed & styles.cardPressed
+        ]} onPress={() => router.push("/technician-register")}>
+            <View>
+                <View style={styles.customerInnerContainer}>
+                    <Wrench size={30} style={styles.iconStyles} />
+                    <Text style={styles.customerText}>TECHNICIAN</Text>
                 </View>
-                <ChevronRight size={30} style={styles.iconStyles} />
-            </Pressable>
+                <Text style={styles.customerPara}>Manage jobs, receive dispatches, and grow earnings.</Text>
+            </View>
+            <ChevronRight size={30} style={styles.iconStyles} />
+        </Pressable>
 
 
         {/* </ScrollView>   */}
-        </View>
+    </View>
 }
 
 const styles = StyleSheet.create({
