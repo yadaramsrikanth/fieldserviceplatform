@@ -31,15 +31,12 @@ export default function AuthLayout() {
 
         <Stack>
 
-            <Stack.Screen name="welcome" options={{
-                header: () => <CustomHeader />
-            }} />
-            <Stack.Screen name="customer-technician" options={{
-                header: () => <AuthHeader />,
-
-            }} />
+            <Stack.Screen name="welcome" options={{ header: () => <CustomHeader /> }} />
+            <Stack.Screen name="customer-technician" options={{ header: () => <AuthHeader />, }} />
             <Stack.Screen name="login" options={{ header: () => <AuthHeader /> }} />
             <Stack.Screen name="forgot-password" options={{ header: () => <AuthHeader /> }} />
+            <Stack.Screen name="customer-register" options={{ header: () => <AuthHeader /> }} />
+            <Stack.Screen name="technician-register" options={{ header: () => <AuthHeader /> }} />
         </Stack>
 
 
